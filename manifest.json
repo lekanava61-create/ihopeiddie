@@ -1,0 +1,13 @@
+{
+    "authors": [
+        { "hyperlink": false, "id": 0, "name": "you" }
+    ],
+    "links": {},
+    "version": "1.0.0",
+    "changelogMedia": null,
+    "description": "Leaves all servers and removes all friends via a slash command.",
+    "pluginClassName": "com.aliucord.plugins.NukeAccount",
+    "changelog": "# 1.0.0\n* Released",
+    "name": "NukeAccount",
+    "updateUrl": ""
+}
