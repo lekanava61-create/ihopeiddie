@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.library")
-    kotlin("android")
+    id("com.android.library") version "7.4.2"
+    kotlin("android") version "1.8.20"
 }
 
 android {
@@ -15,6 +15,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
 dependencies {
@@ -27,10 +31,10 @@ tasks.register("make") {
     dependsOn("assembleRelease")
     doLast {
         val apk = buildDir.resolve("outputs/aar/release/ihopeiddie-release.aar")
-        val dest = rootProject.buildDir.resolve("outputs/plugins/NukeAccount.zip")
-        dest.parentFile?.mkdirs()
-        apk.copyTo(dest, overwrite = true)
-        println("Plugin built: $dest")
+        val dest = rootProject.buildDir.resolve("outputs/plugins")
+        dest.mkdirs()
+        apk.copyTo(dest.resolve("NukeAccount.zip"), overwrite = true)
+        println("✅ Plugin built: ${dest.resolve("NukeAccount.zip")}")
     }
 }
 
@@ -38,7 +42,11 @@ tasks.register("deployWithAdb") {
     dependsOn("make")
     doLast {
         val dest = rootProject.buildDir.resolve("outputs/plugins/NukeAccount.zip")
-        Runtime.getRuntime().exec(arrayOf("adb", "push", dest.absolutePath, "/sdcard/Aliucord/plugins/")).waitFor()
-        println("Plugin deployed via ADB")
+        val result = Runtime.getRuntime().exec(arrayOf("adb", "push", dest.absolutePath, "/sdcard/Aliucord/plugins/")).waitFor()
+        if (result == 0) {
+            println("✅ Plugin deployed via ADB")
+        } else {
+            println("❌ ADB deployment failed with code: $result")
+        }
     }
 }
