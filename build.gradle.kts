@@ -5,6 +5,7 @@ plugins {
 
 android {
     compileSdk = 33
+    namespace = "com.aliucord.plugins"
     
     defaultConfig {
         minSdk = 24
